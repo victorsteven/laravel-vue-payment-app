@@ -1,6 +1,8 @@
 <template>
     <div>
-      <div class="row row-style">
+
+     
+      <div class="row row-style" v-if="products.length > 0">
         <span v-for="product in products" :key="product.id">
           <div class="col-12 col-md-4">
             <a :href="`/payfor/${product.slug}`">
@@ -14,6 +16,9 @@
             </a>
           </div>
         </span>
+      </div>
+       <div class="preloader-background" v-else>
+        <p class="blinking" style="font-size: 40px; color: #304ffe">Loading...</p>
       </div>
     </div>
 </template>
@@ -30,10 +35,6 @@ export default {
         required: true
       }
     },
-
-    data: () => ({
-        loading: false
-    }),
 }
 
 </script>
@@ -53,28 +54,5 @@ export default {
     .row-style {
       padding: 15px;
     }
-  }
-  .preloader-background {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #fff;
-    position: fixed;
-    z-index: 999;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-  }
-  .preloader-background.p {
-    padding-top:120px;
-    margin-left: -60px;
-    opacity: 0.8;
-  } 
-  .blinking {
-      animation: blinker 1.5s linear infinite;
-  }
-  @keyframes blinker {  
-    50% { opacity: 0; }
   }
 </style>

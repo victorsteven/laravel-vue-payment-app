@@ -19,7 +19,7 @@
     @yield("content")
 </div>
 
-<footer class="footer-area section-padding-80-0">
+{{-- <footer class="footer-area section-padding-80-0">
     <div class="bottom-footer-area bg-gray">
         <div class="container">
             <div class="row align-items-center">
@@ -34,7 +34,7 @@
             </div>
         </div>
     </div>
-</footer>
+</footer> --}}
 
 <script src="{{ asset('js/app.js') }}"></script>
 

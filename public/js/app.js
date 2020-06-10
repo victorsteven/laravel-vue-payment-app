@@ -2385,6 +2385,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -2991,17 +2994,17 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     products: {
       type: Array,
       required: true
     }
-  },
-  data: function data() {
-    return {
-      loading: false
-    };
   }
 });
 
@@ -7506,7 +7509,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n.card-style[data-v-4a553918] {\n  width: 22rem;\n  margin-bottom: 25px;\n}\n@media (max-width: 768px) {\n.card-style[data-v-4a553918] {\n    width: 100%;\n}\n.row-style[data-v-4a553918] {\n    padding: 15px;\n}\n}\n.preloader-background[data-v-4a553918] {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  background-color: #fff;\n  position: fixed;\n  z-index: 999;\n  top: 0;\n  left: 0;\n  right: 0;\n  bottom: 0;\n}\n.preloader-background.p[data-v-4a553918] {\n  padding-top:120px;\n  margin-left: -60px;\n  opacity: 0.8;\n}\n.blinking[data-v-4a553918] {\n    -webkit-animation: blinker-data-v-4a553918 1.5s linear infinite;\n            animation: blinker-data-v-4a553918 1.5s linear infinite;\n}\n@-webkit-keyframes blinker-data-v-4a553918 {\n50% { opacity: 0;\n}\n}\n@keyframes blinker-data-v-4a553918 {\n50% { opacity: 0;\n}\n}\n", ""]);
+exports.push([module.i, "\n.card-style[data-v-4a553918] {\n  width: 22rem;\n  margin-bottom: 25px;\n}\n@media (max-width: 768px) {\n.card-style[data-v-4a553918] {\n    width: 100%;\n}\n.row-style[data-v-4a553918] {\n    padding: 15px;\n}\n}\n", ""]);
 
 // exports
 
@@ -40833,25 +40836,36 @@ var render = function() {
         _c("div", { staticClass: "container" }, [
           _vm._m(0),
           _vm._v(" "),
-          _c(
-            "div",
-            { staticClass: "row justify-content-center" },
-            _vm._l(_vm.products, function(product) {
-              return _c("span", { key: product.id }, [
+          _vm.products.length > 0
+            ? _c(
+                "div",
+                { staticClass: "row justify-content-center" },
+                _vm._l(_vm.products, function(product) {
+                  return _c("span", { key: product.id }, [
+                    _c(
+                      "div",
+                      { staticClass: "col-12 col-md-6" },
+                      [
+                        _c("product", { attrs: { product: product } }),
+                        _vm._v(" "),
+                        _c("br")
+                      ],
+                      1
+                    )
+                  ])
+                }),
+                0
+              )
+            : _c("div", { staticClass: "preloader-background" }, [
                 _c(
-                  "div",
-                  { staticClass: "col-12 col-md-6" },
-                  [
-                    _c("product", { attrs: { product: product } }),
-                    _vm._v(" "),
-                    _c("br")
-                  ],
-                  1
+                  "p",
+                  {
+                    staticClass: "blinking",
+                    staticStyle: { "font-size": "40px", color: "#304ffe" }
+                  },
+                  [_vm._v("Loading...")]
                 )
               ])
-            }),
-            0
-          )
         ])
       ]
     )
@@ -41646,36 +41660,50 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
-    _c(
-      "div",
-      { staticClass: "row row-style" },
-      _vm._l(_vm.products, function(product) {
-        return _c("span", { key: product.id }, [
-          _c("div", { staticClass: "col-12 col-md-4" }, [
-            _c("a", { attrs: { href: "/payfor/" + product.slug } }, [
-              _c("div", { staticClass: "card card-style" }, [
-                _c("img", {
-                  staticClass: "card-img-top",
-                  staticStyle: { height: "200px" },
-                  attrs: { src: "/images/" + product.image_path, alt: "..." }
-                }),
-                _vm._v(" "),
-                _c("div", { staticClass: "card-body" }, [
-                  _c("h5", { staticClass: "card-title" }, [
-                    _vm._v(_vm._s(_vm.reduceTitle(product.title)))
-                  ]),
-                  _vm._v(" "),
-                  _c("h5", { staticClass: "card-title" }, [
-                    _vm._v("₦ " + _vm._s(product.price.toLocaleString()))
+    _vm.products.length > 0
+      ? _c(
+          "div",
+          { staticClass: "row row-style" },
+          _vm._l(_vm.products, function(product) {
+            return _c("span", { key: product.id }, [
+              _c("div", { staticClass: "col-12 col-md-4" }, [
+                _c("a", { attrs: { href: "/payfor/" + product.slug } }, [
+                  _c("div", { staticClass: "card card-style" }, [
+                    _c("img", {
+                      staticClass: "card-img-top",
+                      staticStyle: { height: "200px" },
+                      attrs: {
+                        src: "/images/" + product.image_path,
+                        alt: "..."
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "card-body" }, [
+                      _c("h5", { staticClass: "card-title" }, [
+                        _vm._v(_vm._s(_vm.reduceTitle(product.title)))
+                      ]),
+                      _vm._v(" "),
+                      _c("h5", { staticClass: "card-title" }, [
+                        _vm._v("₦ " + _vm._s(product.price.toLocaleString()))
+                      ])
+                    ])
                   ])
                 ])
               ])
             ])
-          ])
+          }),
+          0
+        )
+      : _c("div", { staticClass: "preloader-background" }, [
+          _c(
+            "p",
+            {
+              staticClass: "blinking",
+              staticStyle: { "font-size": "40px", color: "#304ffe" }
+            },
+            [_vm._v("Loading...")]
+          )
         ])
-      }),
-      0
-    )
   ])
 }
 var staticRenderFns = []

@@ -9,13 +9,16 @@
                 </div>
               </div>
           </div>
-          <div class="row justify-content-center">
+          <div class="row justify-content-center" v-if="products.length > 0">
             <span v-for="product in products" :key="product.id">
               <div class="col-12 col-md-6">
                 <product :product="product" />
                 <br>
               </div>
             </span>
+          </div>
+          <div class="preloader-background" v-else>
+            <p class="blinking" style="font-size: 40px; color: #304ffe">Loading...</p>
           </div>
       </div>
     </section>
