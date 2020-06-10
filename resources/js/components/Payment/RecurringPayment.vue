@@ -1,7 +1,7 @@
 <template>
   
   <div>
-    <button @click="openScheduleModal" class="btn hami-btn btn-3">Set Recurring Billing</button>
+    <button @click="openScheduleModal" class="btn hami-btn btn-3 mb-50">Set Recurring Billing</button>
 
       <div class="modal fade" id="newSchedule" role="dialog" style="display: none;">
         <div class="modal-dialog">
