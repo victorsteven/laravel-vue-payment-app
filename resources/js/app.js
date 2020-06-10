@@ -8,6 +8,33 @@ require('./bootstrap');
 
 window.Vue = require('vue');
 
+
+Vue.mixin({
+    methods: {
+      reduceString(str) {
+        if(str) {
+          let count = 50
+          if ((str === null) || (str === ''))
+              return false;
+          else
+          str = str.toString();
+          return str.slice(0, count) + (str.length > count ? "..." : "");
+        }
+      },
+      reduceTitle(str) {
+        if(str) {
+          let count = 30
+          if ((str === null) || (str === ''))
+              return false;
+          else
+          str = str.toString();
+          return str.slice(0, count) + (str.length > count ? "..." : "");
+        }
+      },
+    }
+});
+
+
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue

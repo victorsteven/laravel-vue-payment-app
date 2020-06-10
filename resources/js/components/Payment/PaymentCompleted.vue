@@ -57,10 +57,6 @@ export default {
     product: {
       type: Object,
       required: true
-    },
-    transaction: {
-      type: Object,
-      required: true
     }
   },
 

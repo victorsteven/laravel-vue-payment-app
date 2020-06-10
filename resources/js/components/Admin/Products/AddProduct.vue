@@ -30,7 +30,7 @@
                                 </div>
                                 <div class="form-group">
                                   <label class="control-label">Description</label>
-                                  <textarea class="form-control mb-30" :class="{ 'errorClass' : descriptionError }" rows="5" placeholder="Item Description" v-model="description" required></textarea>
+                                  <textarea class="form-control mb-30" :class="{ 'errorClass' : descriptionError }" rows="5" placeholder="Item Description" v-model="description"></textarea>
                                   <small class="text-danger">{{ descriptionError }}</small>
                                 </div>
                                 <div class="form-group">
@@ -52,8 +52,8 @@
                       </div>
                       <div class="modal-footer">
                           <span class="uploadProgress"></span>
-                          <button type="submit" class="btn hami-btn btn-3 mt-15" v-if="!loading">Create Product</button>
-                          <button  disabled type="button" class="btn hami-btn btn-3 mt-15" v-if="loading">Creating..</button>
+                          <button :disabled="disabled" type="submit" class="btn hami-btn btn-3 mt-15" v-if="!loading">Create Product</button>
+                          <button :disabled="disabled"  type="button" class="btn hami-btn btn-3 mt-15" v-if="loading">Creating..</button>
                       </div>
                   </div>
               </div>
@@ -90,18 +90,19 @@ export default {
         return this.errorMessages['description'] ? this.errorMessages['description'][0] : ''
     },
     imageError() {
-        return this.errorMessages['event_image'] ? this.errorMessages['event_image'][0] : ''
+        return this.errorMessages['image_path'] ? this.errorMessages['image_path'][0] : ''
     },
     visibleFile() {
         return this.$refs.file.files[0] !== ''
+    },
+
+    disabled() {
+      return this.loading || this.title === '' || this.price === '' || this.description === ''
     }
   },
   
   methods: {
-    // createProduct() {
-
-    // },
-
+   
     onChangeFileUpload(e) {
         this.product_image = this.$refs.file.files[0];
         let file = this.$refs.file.files[0];
@@ -142,8 +143,6 @@ export default {
               'Content-Type': 'multipart/form-data'
           }
       }).then(res => {
-        console.log("the response stat: ", res.status)
-        console.log("the response data: ", res.data.status)
           if (res.status === 200) {
             this.success = true  
             setTimeout(() => {
@@ -151,7 +150,6 @@ export default {
               }, 1000)
           } 
       }).catch(error => {
-          console.log("we came to the error block")
           this.loading = false;
           this.errorMessages = error.response.data.errors;
       });

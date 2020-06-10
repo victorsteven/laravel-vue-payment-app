@@ -38,11 +38,6 @@ export default {
       required: true
     }
   },
-
-  methods: {
-    addProduct() {
-      console.log("the add product")
-    }
-  }
 }
+
 </script>

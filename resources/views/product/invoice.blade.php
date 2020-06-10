@@ -8,7 +8,6 @@
                       <table>
                           <tr>
                               <td class="title">
-                                  <!--<img src="https://www.sparksuite.com/images/logo.png" style="width:100%; max-width:300px;">-->
                                   <span>Payuu<br/>
                               </td>
 
@@ -77,18 +76,6 @@
                       &#8358; {{ number_format($transaction->product->price, 2) }}
                   </td>
               </tr>
-
-              <tr class="item">
-                  <td>
-                      Processing Charges
-                  </td>
-
-                  <td>
-                    <?php $total_charges = $transaction->product->price; ?>
-                      &#8358; {{ number_format($total_charges, 2) }}
-                  </td>
-              </tr>
-
               <tr class="total">
                   <td></td>
 
@@ -121,7 +108,7 @@
     @endsection
 
     @section('title')
-        View Transaction | BurseWave.co
+        View Transaction | Payuu
     @endsection
 
     @push('after_styles')

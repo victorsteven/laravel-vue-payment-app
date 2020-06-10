@@ -58,13 +58,18 @@
                         </div>
                     </div>
                 </div>
-                <div v-if="success" class="alert success">
-                  Successful!
-                </div>
-                <div class="modal-footer">
-                    <span class="uploadProgress"></span>
-                    <button type="button" @click="schedule" class="btn hami-btn btn-3 mt-15" v-if="!loading">Schedule Billing</button>
-                    <button type="button" class="btn hami-btn btn-3 mt-15" v-if="loading">Schedule..</button>
+                <span  v-if="success">
+                  <div class="alert success">
+                    We have received your request! This feature will be available soon.
+                  </div>
+                  <div class="modal-footer">
+                  <button @click="closeModal" class="btn hami-btn btn-3" data-dismiss="modal" type="button">Ok</button>
+                  </div>
+                </span>
+                
+                <div class="modal-footer" v-if="!success">
+                    <button :disabled="disabled" type="button" @click="schedule" class="btn hami-btn btn-3 mt-15" v-if="!loading">Schedule Billing</button>
+                    <button :disabled="disabled" type="button" class="btn hami-btn btn-3 mt-15" v-if="loading">Schedule..</button>
                 </div>
             </div>
         </div>
@@ -83,15 +88,19 @@ export default {
     }
   },
 
+  computed: {
+    disabled() {
+      return this.loading || 
+        (this.frequency === 'daily' && this.daytime === '') || 
+        (this.frequency === 'weekly' && this.daytime === 'weekday') || 
+        (this.frequency === 'monthly' && this.daytime === 'monthday')
+    }
+  },
+
   data() {
     return {
-      product_image_display: '',
-      product_image: '',
       loading: false,
       errorMessages: '',
-      description: '',
-      title: '',
-      price: '',
       success: false,
       frequency: 'daily',
       daytime: '',
@@ -169,24 +178,6 @@ export default {
       }
     }
   },
-
-  computed: {
-    titleError() {
-        return this.errorMessages['title'] ? this.errorMessages['title'][0] : ''
-    },
-      priceError() {
-        return this.errorMessages['price'] ? this.errorMessages['price'][0] : ''
-    },
-    descriptionError() {
-        return this.errorMessages['description'] ? this.errorMessages['description'][0] : ''
-    },
-    imageError() {
-        return this.errorMessages['event_image'] ? this.errorMessages['event_image'][0] : ''
-    },
-    visibleFile() {
-        return this.$refs.file.files[0] !== ''
-    }
-  },
   
   methods: {
 
@@ -219,14 +210,15 @@ export default {
         period: period
       }
 
-      console.log("the data tp send: ", postData)
-
       try {
 
-
         const result = await axios.post('/products/schedule', postData)
-        if(result) {
+
+        if(result && result.status === 201) {
+
           this.loading = false
+
+          this.success = true  
 
           console.log("the result: ", result)
 
@@ -236,7 +228,7 @@ export default {
 
         this.loading = false
 
-        console.log("this is the logout error: ", error)
+        console.log("this is the recurring error: ", error)
 
       }
     },

@@ -4,8 +4,7 @@
     <div class="container">
       <div class="d-flex justify-content-between mb-3">
         <add-product></add-product>
-        <!-- <history></history> -->
-        <!-- <button class="btn hami-btn btn-3 mt-15">History</button> -->
+        
       </div>
     </div>
    

@@ -1940,7 +1940,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 
 
 
@@ -2061,15 +2060,16 @@ __webpack_require__.r(__webpack_exports__);
       return this.errorMessages['description'] ? this.errorMessages['description'][0] : '';
     },
     imageError: function imageError() {
-      return this.errorMessages['event_image'] ? this.errorMessages['event_image'][0] : '';
+      return this.errorMessages['image_path'] ? this.errorMessages['image_path'][0] : '';
     },
     visibleFile: function visibleFile() {
       return this.$refs.file.files[0] !== '';
+    },
+    disabled: function disabled() {
+      return this.loading || this.title === '' || this.price === '' || this.description === '';
     }
   },
   methods: {
-    // createProduct() {
-    // },
     onChangeFileUpload: function onChangeFileUpload(e) {
       var _this = this;
 
@@ -2108,9 +2108,6 @@ __webpack_require__.r(__webpack_exports__);
           'Content-Type': 'multipart/form-data'
         }
       }).then(function (res) {
-        console.log("the response stat: ", res.status);
-        console.log("the response data: ", res.data.status);
-
         if (res.status === 200) {
           _this2.success = true;
           setTimeout(function () {
@@ -2118,7 +2115,6 @@ __webpack_require__.r(__webpack_exports__);
           }, 1000);
         }
       })["catch"](function (error) {
-        console.log("we came to the error block");
         _this2.loading = false;
         _this2.errorMessages = error.response.data.errors;
       });
@@ -2245,8 +2241,10 @@ __webpack_require__.r(__webpack_exports__);
       return this.$refs.file.files[0] !== '';
     },
     showImage: function showImage() {
-      console.log("the path: ", this.product.image_path);
       return "/images/".concat(this.product.image_path);
+    },
+    disabled: function disabled() {
+      return this.loading || this.title === '' || this.price === '' || this.description === '';
     }
   },
   mounted: function mounted() {
@@ -2348,21 +2346,6 @@ __webpack_require__.r(__webpack_exports__);
   },
   components: {
     EditProduct: _EditProduct__WEBPACK_IMPORTED_MODULE_0__["default"]
-  },
-  methods: {
-    view: function view() {
-      console.log("the view");
-    },
-    edit: function edit() {
-      console.log("the edit");
-    },
-    reduceString: function reduceString(str) {
-      if (str) {
-        var count = 20;
-        if (str === null || str === '') return false;else str = str.toString();
-        return str.slice(0, count) + (str.length > count ? "..." : "");
-      }
-    }
   }
 });
 
@@ -2411,11 +2394,6 @@ __webpack_require__.r(__webpack_exports__);
     products: {
       type: Array,
       required: true
-    }
-  },
-  methods: {
-    addProduct: function addProduct() {
-      console.log("the add product");
     }
   }
 });
@@ -2616,10 +2594,6 @@ __webpack_require__.r(__webpack_exports__);
     product: {
       type: Object,
       required: true
-    },
-    transaction: {
-      type: Object,
-      required: true
     }
   },
   methods: {// async processpayment() {
@@ -2726,6 +2700,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     product: {
@@ -2733,15 +2712,15 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       required: true
     }
   },
+  computed: {
+    disabled: function disabled() {
+      return this.loading || this.frequency === 'daily' && this.daytime === '' || this.frequency === 'weekly' && this.daytime === 'weekday' || this.frequency === 'monthly' && this.daytime === 'monthday';
+    }
+  },
   data: function data() {
     return {
-      product_image_display: '',
-      product_image: '',
       loading: false,
       errorMessages: '',
-      description: '',
-      title: '',
-      price: '',
       success: false,
       frequency: 'daily',
       daytime: '',
@@ -2817,23 +2796,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }
     };
   },
-  computed: {
-    titleError: function titleError() {
-      return this.errorMessages['title'] ? this.errorMessages['title'][0] : '';
-    },
-    priceError: function priceError() {
-      return this.errorMessages['price'] ? this.errorMessages['price'][0] : '';
-    },
-    descriptionError: function descriptionError() {
-      return this.errorMessages['description'] ? this.errorMessages['description'][0] : '';
-    },
-    imageError: function imageError() {
-      return this.errorMessages['event_image'] ? this.errorMessages['event_image'][0] : '';
-    },
-    visibleFile: function visibleFile() {
-      return this.$refs.file.files[0] !== '';
-    }
-  },
   methods: {
     openScheduleModal: function openScheduleModal() {
       $("#newSchedule").modal('show');
@@ -2866,34 +2828,34 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   frequency: _this.frequency,
                   period: period
                 };
-                console.log("the data tp send: ", postData);
-                _context.prev = 5;
-                _context.next = 8;
+                _context.prev = 4;
+                _context.next = 7;
                 return axios.post('/products/schedule', postData);
 
-              case 8:
+              case 7:
                 result = _context.sent;
 
-                if (result) {
+                if (result && result.status === 201) {
                   _this.loading = false;
+                  _this.success = true;
                   console.log("the result: ", result);
                 }
 
-                _context.next = 16;
+                _context.next = 15;
                 break;
 
-              case 12:
-                _context.prev = 12;
-                _context.t0 = _context["catch"](5);
+              case 11:
+                _context.prev = 11;
+                _context.t0 = _context["catch"](4);
                 _this.loading = false;
-                console.log("this is the logout error: ", _context.t0);
+                console.log("this is the recurring error: ", _context.t0);
 
-              case 16:
+              case 15:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, null, [[5, 12]]);
+        }, _callee, null, [[4, 11]]);
       }))();
     }
   }
@@ -3040,29 +3002,6 @@ __webpack_require__.r(__webpack_exports__);
     return {
       loading: false
     };
-  },
-  computed: {
-    disabled: function disabled() {
-      return this.loading === true;
-    },
-    allFood: function allFood() {
-      return this.$store.getters.allFood;
-    }
-  },
-  methods: {
-    details: function details() {},
-    getAllFood: function getAllFood() {
-      var _this = this;
-
-      this.loading = true;
-      this.$store.dispatch('getAllFood').then(function () {
-        _this.loading = false;
-      });
-    },
-    titleShorten: function titleShorten(str) {
-      var count = 30;
-      return str.slice(0, count) + (str.length > count ? "..." : "");
-    }
   }
 });
 
@@ -40169,10 +40108,10 @@ render._withStripped = true
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Admin/AdminTractions.vue?vue&type=template&id=1a77c1fb&":
-/*!***********************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Admin/AdminTractions.vue?vue&type=template&id=1a77c1fb& ***!
-  \***********************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Admin/AdminTransactions.vue?vue&type=template&id=01cd9e6e&":
+/*!**************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Admin/AdminTransactions.vue?vue&type=template&id=01cd9e6e& ***!
+  \**************************************************************************************************************************************************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -40388,11 +40327,7 @@ var render = function() {
                           ],
                           staticClass: "form-control mb-30",
                           class: { errorClass: _vm.descriptionError },
-                          attrs: {
-                            rows: "5",
-                            placeholder: "Item Description",
-                            required: ""
-                          },
+                          attrs: { rows: "5", placeholder: "Item Description" },
                           domProps: { value: _vm.description },
                           on: {
                             input: function($event) {
@@ -40475,7 +40410,7 @@ var render = function() {
                         "button",
                         {
                           staticClass: "btn hami-btn btn-3 mt-15",
-                          attrs: { type: "submit" }
+                          attrs: { disabled: _vm.disabled, type: "submit" }
                         },
                         [_vm._v("Create Product")]
                       )
@@ -40486,7 +40421,7 @@ var render = function() {
                         "button",
                         {
                           staticClass: "btn hami-btn btn-3 mt-15",
-                          attrs: { disabled: "", type: "button" }
+                          attrs: { disabled: _vm.disabled, type: "button" }
                         },
                         [_vm._v("Creating..")]
                       )
@@ -40776,7 +40711,7 @@ var render = function() {
                         "button",
                         {
                           staticClass: "btn hami-btn btn-3 mt-15",
-                          attrs: { type: "submit" }
+                          attrs: { disabled: _vm.disabled, type: "submit" }
                         },
                         [_vm._v("Update Product")]
                       )
@@ -40787,7 +40722,7 @@ var render = function() {
                         "button",
                         {
                           staticClass: "btn hami-btn btn-3 mt-15",
-                          attrs: { disabled: "", type: "button" }
+                          attrs: { disabled: _vm.disabled, type: "button" }
                         },
                         [_vm._v("Updating..")]
                       )
@@ -40847,7 +40782,7 @@ var render = function() {
         [
           _c("a", { attrs: { href: "/payfor/" + _vm.product.slug } }, [
             _c("h5", { staticClass: "card-title" }, [
-              _vm._v(_vm._s(_vm.product.title))
+              _vm._v(_vm._s(_vm.reduceTitle(_vm.product.title)))
             ]),
             _vm._v(" "),
             _c("p", { staticClass: "card-text" }, [
@@ -40855,7 +40790,7 @@ var render = function() {
             ]),
             _vm._v(" "),
             _c("h5", { staticClass: "card-title" }, [
-              _vm._v(_vm._s(_vm.product.price.toLocaleString()))
+              _vm._v("₦ " + _vm._s(_vm.product.price.toLocaleString()))
             ])
           ]),
           _vm._v(" "),
@@ -41530,37 +41465,53 @@ var render = function() {
             ]),
             _vm._v(" "),
             _vm.success
-              ? _c("div", { staticClass: "alert success" }, [
-                  _vm._v("\n                Successful!\n              ")
+              ? _c("span", [
+                  _c("div", { staticClass: "alert success" }, [
+                    _vm._v(
+                      "\n                  We have received your request! This feature will be available soon.\n                "
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "modal-footer" }, [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn hami-btn btn-3",
+                        attrs: { "data-dismiss": "modal", type: "button" },
+                        on: { click: _vm.closeModal }
+                      },
+                      [_vm._v("Ok")]
+                    )
+                  ])
                 ])
               : _vm._e(),
             _vm._v(" "),
-            _c("div", { staticClass: "modal-footer" }, [
-              _c("span", { staticClass: "uploadProgress" }),
-              _vm._v(" "),
-              !_vm.loading
-                ? _c(
-                    "button",
-                    {
-                      staticClass: "btn hami-btn btn-3 mt-15",
-                      attrs: { type: "button" },
-                      on: { click: _vm.schedule }
-                    },
-                    [_vm._v("Schedule Billing")]
-                  )
-                : _vm._e(),
-              _vm._v(" "),
-              _vm.loading
-                ? _c(
-                    "button",
-                    {
-                      staticClass: "btn hami-btn btn-3 mt-15",
-                      attrs: { type: "button" }
-                    },
-                    [_vm._v("Schedule..")]
-                  )
-                : _vm._e()
-            ])
+            !_vm.success
+              ? _c("div", { staticClass: "modal-footer" }, [
+                  !_vm.loading
+                    ? _c(
+                        "button",
+                        {
+                          staticClass: "btn hami-btn btn-3 mt-15",
+                          attrs: { disabled: _vm.disabled, type: "button" },
+                          on: { click: _vm.schedule }
+                        },
+                        [_vm._v("Schedule Billing")]
+                      )
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _vm.loading
+                    ? _c(
+                        "button",
+                        {
+                          staticClass: "btn hami-btn btn-3 mt-15",
+                          attrs: { disabled: _vm.disabled, type: "button" }
+                        },
+                        [_vm._v("Schedule..")]
+                      )
+                    : _vm._e()
+                ])
+              : _vm._e()
           ])
         ])
       ]
@@ -41709,11 +41660,11 @@ var render = function() {
                 _vm._v(" "),
                 _c("div", { staticClass: "card-body" }, [
                   _c("h5", { staticClass: "card-title" }, [
-                    _vm._v(_vm._s(product.title))
+                    _vm._v(_vm._s(_vm.reduceTitle(product.title)))
                   ]),
                   _vm._v(" "),
                   _c("h5", { staticClass: "card-title" }, [
-                    _vm._v(_vm._s(product.price.toLocaleString()))
+                    _vm._v("₦ " + _vm._s(product.price.toLocaleString()))
                   ])
                 ])
               ])
@@ -53903,7 +53854,7 @@ module.exports = function(module) {
 
 var map = {
 	"./components/Admin/AdminDashboard.vue": "./resources/js/components/Admin/AdminDashboard.vue",
-	"./components/Admin/AdminTractions.vue": "./resources/js/components/Admin/AdminTractions.vue",
+	"./components/Admin/AdminTransactions.vue": "./resources/js/components/Admin/AdminTransactions.vue",
 	"./components/Admin/Products/AddProduct.vue": "./resources/js/components/Admin/Products/AddProduct.vue",
 	"./components/Admin/Products/EditProduct.vue": "./resources/js/components/Admin/Products/EditProduct.vue",
 	"./components/Admin/Products/Product.vue": "./resources/js/components/Admin/Products/Product.vue",
@@ -53953,6 +53904,24 @@ webpackContext.id = "./resources/js sync recursive \\.vue$/";
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
+Vue.mixin({
+  methods: {
+    reduceString: function reduceString(str) {
+      if (str) {
+        var count = 50;
+        if (str === null || str === '') return false;else str = str.toString();
+        return str.slice(0, count) + (str.length > count ? "..." : "");
+      }
+    },
+    reduceTitle: function reduceTitle(str) {
+      if (str) {
+        var count = 30;
+        if (str === null || str === '') return false;else str = str.toString();
+        return str.slice(0, count) + (str.length > count ? "..." : "");
+      }
+    }
+  }
+});
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -54093,16 +54062,16 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/js/components/Admin/AdminTractions.vue":
-/*!**********************************************************!*\
-  !*** ./resources/js/components/Admin/AdminTractions.vue ***!
-  \**********************************************************/
+/***/ "./resources/js/components/Admin/AdminTransactions.vue":
+/*!*************************************************************!*\
+  !*** ./resources/js/components/Admin/AdminTransactions.vue ***!
+  \*************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _AdminTractions_vue_vue_type_template_id_1a77c1fb___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./AdminTractions.vue?vue&type=template&id=1a77c1fb& */ "./resources/js/components/Admin/AdminTractions.vue?vue&type=template&id=1a77c1fb&");
+/* harmony import */ var _AdminTransactions_vue_vue_type_template_id_01cd9e6e___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./AdminTransactions.vue?vue&type=template&id=01cd9e6e& */ "./resources/js/components/Admin/AdminTransactions.vue?vue&type=template&id=01cd9e6e&");
 /* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 var script = {}
@@ -54112,8 +54081,8 @@ var script = {}
 
 var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_1__["default"])(
   script,
-  _AdminTractions_vue_vue_type_template_id_1a77c1fb___WEBPACK_IMPORTED_MODULE_0__["render"],
-  _AdminTractions_vue_vue_type_template_id_1a77c1fb___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  _AdminTransactions_vue_vue_type_template_id_01cd9e6e___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _AdminTransactions_vue_vue_type_template_id_01cd9e6e___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
   false,
   null,
   null,
@@ -54123,24 +54092,24 @@ var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_
 
 /* hot reload */
 if (false) { var api; }
-component.options.__file = "resources/js/components/Admin/AdminTractions.vue"
+component.options.__file = "resources/js/components/Admin/AdminTransactions.vue"
 /* harmony default export */ __webpack_exports__["default"] = (component.exports);
 
 /***/ }),
 
-/***/ "./resources/js/components/Admin/AdminTractions.vue?vue&type=template&id=1a77c1fb&":
-/*!*****************************************************************************************!*\
-  !*** ./resources/js/components/Admin/AdminTractions.vue?vue&type=template&id=1a77c1fb& ***!
-  \*****************************************************************************************/
+/***/ "./resources/js/components/Admin/AdminTransactions.vue?vue&type=template&id=01cd9e6e&":
+/*!********************************************************************************************!*\
+  !*** ./resources/js/components/Admin/AdminTransactions.vue?vue&type=template&id=01cd9e6e& ***!
+  \********************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_AdminTractions_vue_vue_type_template_id_1a77c1fb___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./AdminTractions.vue?vue&type=template&id=1a77c1fb& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Admin/AdminTractions.vue?vue&type=template&id=1a77c1fb&");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_AdminTractions_vue_vue_type_template_id_1a77c1fb___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_AdminTransactions_vue_vue_type_template_id_01cd9e6e___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./AdminTransactions.vue?vue&type=template&id=01cd9e6e& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Admin/AdminTransactions.vue?vue&type=template&id=01cd9e6e&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_AdminTransactions_vue_vue_type_template_id_01cd9e6e___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_AdminTractions_vue_vue_type_template_id_1a77c1fb___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_AdminTransactions_vue_vue_type_template_id_01cd9e6e___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

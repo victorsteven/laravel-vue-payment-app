@@ -7,8 +7,8 @@
               <div class="card card-style">
                 <img :src="`/images/${product.image_path}`" class="card-img-top" alt="..." style="height: 200px;">
                 <div class="card-body">
-                  <h5 class="card-title">{{ product.title }}</h5>
-                  <h5 class="card-title">{{ (product.price).toLocaleString() }}</h5>
+                  <h5 class="card-title">{{ reduceTitle(product.title) }}</h5>
+                  <h5 class="card-title">&#8358; {{ (product.price).toLocaleString() }}</h5>
                 </div>
               </div>
             </a>
@@ -34,33 +34,8 @@ export default {
     data: () => ({
         loading: false
     }),
-
-    computed: {
-        disabled(){
-            return this.loading === true
-        },
-        allFood() {
-            return this.$store.getters.allFood
-        }
-    },
-    methods: {
-
-      details() {
-
-      },
-
-       getAllFood() {
-         this.loading = true
-          this.$store.dispatch('getAllFood').then(() => {
-          this.loading = false
-        })
-       },
-        titleShorten(str){
-          let count = 30
-          return str.slice(0, count) + (str.length > count ? "..." : "");
-        }
-    }
 }
+
 </script>
 
 <style scoped>

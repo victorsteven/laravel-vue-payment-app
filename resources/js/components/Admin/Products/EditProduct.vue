@@ -57,8 +57,8 @@
                       </div>
                       <div class="modal-footer">
                           <span class="uploadProgress"></span>
-                          <button type="submit" class="btn hami-btn btn-3 mt-15" v-if="!loading">Update Product</button>
-                          <button disabled type="button" class="btn hami-btn btn-3 mt-15" v-if="loading">Updating..</button>
+                          <button :disabled="disabled" type="submit" class="btn hami-btn btn-3 mt-15" v-if="!loading">Update Product</button>
+                          <button :disabled="disabled" type="button" class="btn hami-btn btn-3 mt-15" v-if="loading">Updating..</button>
                       </div>
                   </div>
               </div>
@@ -110,9 +110,11 @@ export default {
         return this.$refs.file.files[0] !== ''
     },
     showImage() {
-      console.log("the path: ", this.product.image_path)
-        return `/images/${this.product.image_path}`
+      return `/images/${this.product.image_path}`
     },
+     disabled() {
+      return this.loading || this.title === '' || this.price === '' || this.description === ''
+    }
   },
 
   mounted() {

@@ -2,7 +2,7 @@
     @section('content')
         @if($transaction->status == 'pending')
             @section('title')
-              Pending Payment | BurseWave
+              Pending Payment | Payuu
             @endsection
             <div class="alert alert-danger">
               Infomation: <b>{{ $transaction->message }}</b>
@@ -31,7 +31,7 @@
         @endif
         @if($transaction->status == 'success')
             @section('title')
-              Successful Payment | BurseWave.co
+              Successful Payment | Payuu
             @endsection
             <div class="alert alert-success">
                 <b>Payment Completed successfully!</b><br>
