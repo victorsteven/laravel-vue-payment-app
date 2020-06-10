@@ -36,7 +36,7 @@
                                 <div class="form-group">
                                     <label class="control-label">Product Image</label>
                                     <div class="custom-file">
-                                      <input type="file" class="custom-file-input" id="customFile" name="product_image" ref="file" :class="{ 'errorClass' : imageError }" @change="onChangeFileUpload">
+                                      <input accept="image/*" type="file" class="custom-file-input" id="customFile" name="product_image" ref="file" :class="{ 'errorClass' : imageError }" @change="onChangeFileUpload">
                                       <label class="custom-file-label" for="customFile">Choose file</label>
                                     </div>
                                     <div v-if="product_image_display.length > 200 && visibleFile">
@@ -97,7 +97,7 @@ export default {
     },
 
     disabled() {
-      return this.loading || this.title === '' || this.price === '' || this.description === ''
+      return this.loading || this.title === '' || this.price === '' || this.description === '' || this.product_image === ''
     }
   },
   

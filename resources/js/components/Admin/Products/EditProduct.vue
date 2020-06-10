@@ -36,7 +36,7 @@
                                 <div class="form-group">
                                     <label class="control-label">Product Image</label>
                                     <div class="custom-file">
-                                      <input type="file" class="custom-file-input" id="customFile" name="product_image" ref="file" :class="{ 'errorClass' : imageError }" @change="onChangeFileUpload">
+                                      <input accept="image/*" type="file" class="custom-file-input" id="customFile" name="product_image" ref="file" :class="{ 'errorClass' : imageError }" @change="onChangeFileUpload">
                                       <label class="custom-file-label" for="customFile">Choose file</label>
                                     </div>
                                     <div>
