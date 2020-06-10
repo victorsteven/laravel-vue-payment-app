@@ -2,7 +2,7 @@
     <div>
 
      
-      <div class="row row-style" v-if="products.length > 0">
+      <div class="row row-style mb-30" v-if="products.length > 0">
         <span v-for="product in products" :key="product.id">
           <div class="col-12 col-md-4">
             <a :href="`/payfor/${product.slug}`">
